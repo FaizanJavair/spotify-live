@@ -8,6 +8,7 @@ import {
   Home,
   Search,
   Briefcase,
+  Info,
 } from "lucide-react";
 import { SpotifySidebar } from "./components/SpotifySiderbar";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
@@ -15,6 +16,7 @@ import { ContentCard } from "./components/ContentCard";
 import { RightPanel } from "./components/RightPanel";
 import { SpotifyPlayer } from "./components/SpotifyPlayer";
 import { ExpandedView } from "./components/ExpandedView";
+import { WelcomePopup } from "./components/WelcomePopup";
 
 const HAPPENING_NOW = [
   {
@@ -157,6 +159,7 @@ const ALL_PLAYABLE = [...HAPPENING_NOW, ...MADE_FOR_YOU, ...THINGS_YOU_LOVE];
 export default function App() {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
+  const [showWelcome, setShowWelcome] = useState(true);
 
   // Track the current stream using its ID
   const [activeStreamId, setActiveStreamId] = useState(HAPPENING_NOW[0].id);
@@ -205,7 +208,10 @@ export default function App() {
     ];
 
   return (
-    <div className="h-screen w-full flex flex-col bg-black overflow-hidden font-sans select-none">
+    <div className="h-screen w-full flex flex-col bg-black overflow-hidden font-sans select-none relative">
+      {/* Welcome Popup */}
+      {showWelcome && <WelcomePopup onClose={() => setShowWelcome(false)} />}
+
       {/* Header - Custom Spotify Implementation */}
       <div className="h-[64px] bg-[#000] sticky top-0 z-20 flex items-center justify-between px-4 shrink-0 gap-4">
         {/* Left: Navigation Arrows */}
@@ -288,6 +294,14 @@ export default function App() {
                   <button className="bg-[#1DB954] text-black px-3 py-1.5 rounded-full text-sm font-bold hover:scale-105 transition-transform flex items-center gap-2 shadow-lg shadow-green-900/20">
                     <div className="w-2 h-2 rounded-full bg-black animate-pulse" />
                     Spotify Live
+                  </button>
+                  <button
+                    onClick={() => setShowWelcome(true)}
+                    className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#282828] hover:bg-[#3E3E3E] text-white text-sm font-medium transition-colors border border-[#1DB954]/20 hover:border-[#1DB954]/50 ml-1"
+                    title="View Live Tasks"
+                  >
+                    <Info className="w-4 h-4 text-[#1DB954]" />
+                    <span className="opacity-90">Prototype Tasks</span>
                   </button>
                 </div>
 

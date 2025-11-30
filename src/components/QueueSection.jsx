@@ -91,6 +91,7 @@ const QUEUE_ITEMS = [
 
 export function QueueSection({ emotes, onEmoteClick }) {
   const [likedTracks, setLikedTracks] = useState(new Set());
+  const [isCurrentLiked, setIsCurrentLiked] = useState(false);
 
   const toggleLike = (id) => {
     setLikedTracks((prev) => {
@@ -108,17 +109,36 @@ export function QueueSection({ emotes, onEmoteClick }) {
     <div className="flex-1 overflow-y-auto px-4 py-2 custom-scrollbar">
       <div className="flex flex-col gap-4">
         {/* Currently Playing */}
-        <div className="bg-[#282828]/50 p-3 rounded-lg">
+        <div className="bg-[#282828]/50 p-3 rounded-lg group">
           <div className="flex flex-col gap-1 mb-2">
             <span className="text-[10px] uppercase font-bold text-[#1DB954] tracking-wider">
               Now Playing
             </span>
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-500 rounded shadow" />
-              <div>
-                <p className="text-sm font-bold text-white">Neon Nights</p>
-                <p className="text-xs text-[#b3b3b3]">Synthwave Boy</p>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-white truncate">
+                  Neon Nights
+                </p>
+                <p className="text-xs text-[#b3b3b3] truncate">Synthwave Boy</p>
               </div>
+
+              {/* Current Song Like Button */}
+              <button
+                onClick={() => setIsCurrentLiked(!isCurrentLiked)}
+                className={`
+                  transition-all p-1
+                  ${
+                    isCurrentLiked
+                      ? "opacity-100 text-[#1DB954]"
+                      : "opacity-0 group-hover:opacity-100 text-[#b3b3b3] hover:text-[#1DB954]"
+                  }
+                `}
+              >
+                <Heart
+                  className={`w-4 h-4 ${isCurrentLiked ? "fill-current" : ""}`}
+                />
+              </button>
             </div>
           </div>
 

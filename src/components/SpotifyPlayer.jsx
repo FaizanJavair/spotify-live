@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import {
   SkipBack,
   SkipForward,
@@ -21,6 +22,13 @@ export function SpotifyPlayer({
   onNextStream,
   onPrevStream,
 }) {
+  const [isLiked, setIsLiked] = useState(false);
+
+  // Reset liked state when the stream changes
+  useEffect(() => {
+    setIsLiked(false);
+  }, [currentStream?.id]);
+
   // Consistent gradient mapping matching App data
   const getGradientClasses = (color) => {
     switch (color) {
@@ -56,21 +64,28 @@ export function SpotifyPlayer({
           </div>
         </div>
         <div className="flex flex-col justify-center">
+          {/* Song Name (Prominent) */}
           <a
             href="#"
             className="text-sm font-normal hover:underline cursor-pointer text-white line-clamp-1"
           >
-            {currentStream?.title || "Select a Stream"}
+            Neon Nights
           </a>
+          {/* Channel/Stream Info (Subtext) */}
           <a
             href="#"
             className="text-xs text-[#b3b3b3] hover:underline hover:text-white cursor-pointer line-clamp-1"
           >
-            {currentStream?.artist || "Spotify Live"}
+            {"Synthwave Boy"} • {currentStream?.artist || "Spotify Live"}
           </a>
         </div>
-        <button className="text-[#b3b3b3] hover:text-white transition-colors ml-2">
-          <Heart className="w-4 h-4" />
+        <button
+          onClick={() => setIsLiked(!isLiked)}
+          className={`transition-colors ml-2 ${
+            isLiked ? "text-[#1DB954]" : "text-[#b3b3b3] hover:text-white"
+          }`}
+        >
+          <Heart className={`w-4 h-4 ${isLiked ? "fill-current" : ""}`} />
         </button>
       </div>
 
